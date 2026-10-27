@@ -1,0 +1,36 @@
+/* working CSS - also this is a comment */
+@font-face {
+  font-family: "kiwisoda";
+  src: url("../KiwiSoda.ttf");
+}
+@font-face {
+  font-family: "bombardier";
+  src: url("../fonts/BOMBARD_.ttf");
+}
+@font-face {
+  font-family: "architectsdaughter";
+  src: url("../fonts/ArchitectsDaughter.ttf");
+}
+
+body{
+    background-color: black;
+    color: white;
+}
+button{
+    background-color: grey;
+    color: aqua;
+}
+#intro{/*15 is base for paragraph text*/
+    font-size: 18px;
+    text-align: center;
+    font-family: "kiwisoda";
+}
+h1{/*32 is base for h1*/
+    font-size: 40px;
+    font-family: 'bombardier';
+}
+#title{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
