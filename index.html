@@ -4,18 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="source.js" defer></script>
     <title>RPG</title>
 </head>
 <!-- working html - also this is a comment -->
 <body>
     <div id="title">
-    <h1 >NAME PENDING</h1>
-</div>
-    <p id="intro">Hello</p>
+       
+    </div>
+    <p id="intro"></p>
+    <p id="playdata">Player: <br></p>
+    <p id="enemdata"> Enemy: <br></p>
+    <button id="dmgenem" onclick="dealdamage(2)">Attack</button>
+    <button id="specil" onclick="Specialmanuevre(1)">Special</button>
+    <button id="def" onclick="playerdefend(2)">Block</button>
+    <script src="source.js"></script>
     <script>
+    function takedamage(damage,mult){
+
+            character.takedamage(damage,mult)
+            loadchardata(character)
+            loadenemdata(enemy)
+        }
+    function dealdamage(damage){
+            if(character.ap > 0 && character.status[0] != "dead"){
+                enemy.takedamage(damage,character.dmgmult)
+                loadchardata(character)
+                loadenemdata(enemy)
+                character.ap -= 1
+                if(character.ap == 0){
+                    introduction.innerHTML += "You do not have enough action points"
+                disable_btn()
+                takeenemturn(2,1)
+                }
+            }else if(character.health > 0){
+                introduction.innerHTML += "You do not have enough action points"
+                disable_btn()
+                takeenemturn(2,1)
+            }else{
+                introduction.innerHTML = "You have contracted die"
+                disable_btn()
+            }
+            they_ded()
+
+
+        }
+function Specialmanuevre(multincrease){
+    if(character.ap > 0 && character.status[0] != "dead"){
+        character.special(multincrease)
+        loadchardata(character)
+                loadenemdata(enemy)
+        character.ap -= 1
+        if(character.ap == 0){
+                    introduction.innerHTML += "You do not have enough action points"
+                disable_btn()
+                takeenemturn(2,1)
+    }
+                }
+                else if(character.health > 0){
+                introduction.innerHTML += "You do not have enough action points"
+                disable_btn()
+                takeenemturn(2,1)}
+                else{
+                introduction.innerHTML = "You have contracted die"
+                disable_btn()
+            }
+            they_ded()
+}
+    function playerdefend(damage){
+            if(character.ap > 0 && character.status[0] != "dead"){
+                character.defend(character.dmgresist, 2)
+                loadchardata(character)
+                loadenemdata(enemy)
+                character.ap -= 1
+                if(character.ap == 0){
+                    introduction.innerHTML += "You do not have enough action points"
+                disable_btn()
+                takeenemturn(2,1)
+                }
+            }else if(character.health > 0){
+                introduction.innerHTML += "You do not have enough action points"
+                disable_btn()
+                takeenemturn(2,1)
+            }else{
+                introduction.innerHTML = "You have contracted die"
+                disable_btn()
+            }
+            they_ded()
+
+        }
+    function takeenemturn(damage,multincrease){
+        for(let i = 0; i<2; i++){   
+            let enemyintent = Math.floor(Math.random() * 12) + 1
+        if(enemy.status[0] != "dead"){
+            
+            if(enemyintent >= 1 && enemyintent <= 4){
+                console.log(enemyintent)
+            console.log("attack")
+                takedamage(damage,enemy.dmgmult)
+                introduction.innerHTML = "The enemy attacks you"
+                enable_btn()
+                character.ap = 2
+                loadchardata(character)
+                loadenemdata(enemy)
+            }else if(enemyintent > 4 && enemyintent <= 8){
+                console.log(enemyintent)
+                console.log("defend")
+                enemy.defend(enemy.dmgresist, 2)
+                introduction.innerHTML = "The enemy fortifies."
+                enable_btn()
+                character.ap = 2 
+                loadchardata(character)
+                loadenemdata(enemy)
+            }else if(enemyintent > 8 && enemyintent <= 12){
+                console.log(enemyintent)
+                console.log("special")
+                enemy.special(multincrease)
+                introduction.innerHTML = "The enemy sharpens their blade."
+                enable_btn()
+                character.ap = 2 
+                loadchardata(character)
+                loadenemdata(enemy)
+            }
+        }else{
+            introduction.innerHTML = "YOU WON"
+            disable_btn()
+        }
+    if(character.health < 1){
+        introduction.innerHTML = "You have contracted die"
+                disable_btn()
+    }
+    }
+        
+        
+
+    }
+        function they_ded(){
+            if(enemy.status[0] == "dead"){
+            introduction.innerHTML = "YOU WON"
+            disable_btn()
+            }
+        }
+
+        function disable_btn(){
+            atkBtn.disabled = true
+            defBtn.disabled = true
+            spcBtn.disabled = true
+        }
+        function enable_btn(){
+            atkBtn.disabled = false
+            defBtn.disabled = false
+            spcBtn.disabled = false
+        }
+        function loadchardata(character){
+            playerdata.innerHTML = "Player: <br>"
+            playerdata.innerHTML += `HP: ${character.health}/${character.maxHealth}`
+        playerdata.innerHTML += `<br> Damage multiplier: ${character.dmgmult}`
+        playerdata.innerHTML += `<br> Armor: ${character.dmgresist}`
+        playerdata.innerHTML += `<br> Status: ${character.status[0]}, ${character.status[1]} `
+        playerdata.innerHTML += `<br> Action Points: ${character.ap} <br>`
+        }
+        function loadenemdata(enemy){
+            enemydata.innerHTML = "Enemy: <br>"
+            enemydata.innerHTML += `HP: ${enemy.health}/${enemy.maxHealth}`
+        enemydata.innerHTML += `<br> Damage multiplier: ${enemy.dmgmult}`
+        enemydata.innerHTML += `<br> Armor: ${enemy.dmgresist}`
+        enemydata.innerHTML += `<br> Status: ${enemy.status[0]}, ${enemy.status[1]}`
+        }
+
         const introduction = document.getElementById("intro")
-        introduction.innerHTML = "Put story and tutorial text here"
+        const playerdata = document.getElementById("playdata")
+        const enemydata = document.getElementById("enemdata")
+        const atkBtn = document.getElementById("dmgenem")
+        const defBtn = document.getElementById("def")
+        const spcBtn = document.getElementById("specil")
+        let enemyintent = Math.floor(Math.random() * 12) + 1
+        console.log(enemyintent)
+        let player_turn = true
+        // introduction.innerHTML = "Put story and tutorial text here"
+        chararray = ["alive", "fine"]
+        enemyarray = ["alive", "fine"]
+        character = new Player(1,10,10,0,chararray, 2)
+        enemy = new Enemy(1,12,12,0,enemyarray)
+        loadchardata(character)
+        loadenemdata(enemy)
+        
+
+        
     </script>
 </body>
 </html>

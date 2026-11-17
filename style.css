@@ -1,7 +1,7 @@
 /* working CSS - also this is a comment */
 @font-face {
   font-family: "kiwisoda";
-  src: url("../KiwiSoda.ttf");
+  src: url("../fonts/KiwiSoda.ttf");
 }
 @font-face {
   font-family: "bombardier";
@@ -15,13 +15,22 @@
 body{
     background-color: black;
     color: white;
+    
 }
 button{
     background-color: grey;
     color: aqua;
+    font-size: 20px;
+    width: 100px;
+    height: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    font-family: "bombardier";
+    justify-content: center;
+    align-items: center;
 }
 #intro{/*15 is base for paragraph text*/
-    font-size: 18px;
+    font-size: 23px;
     text-align: center;
     font-family: "kiwisoda";
 }
@@ -33,4 +42,13 @@ h1{/*32 is base for h1*/
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+button:hover{
+    background-color: orange;
+    color: rgb(45, 151, 107);
+}
+button:disabled{
+    background-color: rgba(255, 166, 0, 0.685);
+    color: rgba(45, 151, 107, 0.589);
 }
